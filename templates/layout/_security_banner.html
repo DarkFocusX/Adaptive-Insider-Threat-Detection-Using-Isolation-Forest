@@ -1,0 +1,10 @@
+{% if security and security.show_warning %}
+<div class="alert alert-warning alert-dismissible fade show security-banner" role="alert">
+    <i class="fa-solid fa-shield-halved me-2"></i>
+    <strong>Security Notice:</strong> {{ security.warning_message }}
+    <span class="ms-2 badge bg-dark">
+        Trust: {{ security.trust_score }}% | Risk: {{ security.risk_level }} | Prediction: {{ security.last_prediction }}
+    </span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+{% endif %}

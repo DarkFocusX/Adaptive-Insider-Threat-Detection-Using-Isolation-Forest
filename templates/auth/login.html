@@ -1,0 +1,34 @@
+{% extends 'layout/base.html' %}
+{% block title %}Login | SecureBank{% endblock %}
+
+{% block content %}
+<section class="auth-section d-flex align-items-center justify-content-center min-vh-100">
+    <div class="auth-card glass-card p-4 p-md-5" data-aos="fade-up">
+        <div class="text-center mb-4">
+            <div class="auth-icon mb-3"><i class="fa-solid fa-lock"></i></div>
+            <h2 class="text-white fw-bold">Welcome Back</h2>
+            <p class="text-white-50">Login to your secure banking account</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('auth.login') }}" id="loginForm">
+            <div class="mb-3">
+                <label class="form-label text-white-50">Email</label>
+                <input type="email" name="email" class="form-control form-control-lg" required>
+            </div>
+            <div class="mb-4">
+                <label class="form-label text-white-50">Password</label>
+                <input type="password" name="password" class="form-control form-control-lg" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg w-100">
+                <span class="btn-text"><i class="fa-solid fa-right-to-bracket me-2"></i>Login</span>
+                <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+            </button>
+        </form>
+
+        <p class="text-center text-white-50 mt-4 mb-0">
+            Don't have an account?
+            <a href="{{ url_for('auth.register') }}" class="text-info">Register</a>
+        </p>
+    </div>
+</section>
+{% endblock %}

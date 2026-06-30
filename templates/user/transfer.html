@@ -1,0 +1,37 @@
+{% extends 'layout/base.html' %}
+{% block title %}Transfer | SecureBank{% endblock %}
+{% block content %}
+<div class="py-4" data-aos="fade-up">
+    <div class="glass-card p-4 p-md-5 mx-auto banking-form-card">
+        <h3 class="text-white mb-1"><i class="fa-solid fa-money-bill-transfer me-2"></i>Transfer Money</h3>
+        <p class="text-white-50 mb-4">Available Balance: ₹{{ "%.2f"|format(user.balance) }}</p>
+        <form method="POST" id="bankingForm" data-confirm-title="Confirm Transfer" data-confirm-body="Are you sure you want to transfer this amount?">
+            <div class="mb-3">
+                <label class="form-label text-white-50">Receiver Account Number</label>
+                <input type="text" name="receiver_account" id="receiverAccount" class="form-control" maxlength="12" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label text-white-50">Receiver Name</label>
+                <input type="text" name="receiver_name" id="receiverName" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label text-white-50">Amount (₹)</label>
+                <input type="number" name="amount" class="form-control form-control-lg" min="1" max="{{ user.balance }}" step="0.01" required>
+            </div>
+            <div class="mb-4">
+                <label class="form-label text-white-50">Description</label>
+                <input type="text" name="description" class="form-control" placeholder="Fund Transfer">
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg w-100" {% if security.disable_transfer %}disabled{% endif %}>
+                {% if security.disable_transfer %}
+                    Transfer Disabled (Security)
+                {% else %}
+                    <i class="fa-solid fa-paper-plane me-2"></i>Transfer
+                {% endif %}
+            </button>
+        </form>
+    </div>
+</div>
+{% include 'user/_confirm_modal.html' %}
+{% endblock %}
+{% block extra_js %}<script src="{{ url_for('static', filename='js/banking.js') }}"></script>{% endblock %}

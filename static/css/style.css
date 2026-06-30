@@ -1,0 +1,150 @@
+:root {
+    --primary-dark: #0b1f3a;
+    --primary-blue: #1e3a8a;
+    --accent-blue: #3b82f6;
+    --glass-bg: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.15);
+}
+
+body.app-body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0b1f3a 0%, #1e3a8a 50%, #312e81 100%);
+    color: #fff;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.glass-nav,
+.glass-sidebar,
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.glass-nav {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+}
+
+.sidebar {
+    min-height: calc(100vh - 56px);
+    margin-top: 1rem;
+}
+
+.sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.75);
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    margin: 0.25rem 0.75rem;
+}
+
+.sidebar .nav-link:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+.main-content {
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
+}
+
+.auth-section {
+    padding: 2rem 1rem;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 480px;
+}
+
+.auth-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(59, 130, 246, 0.2);
+    color: #93c5fd;
+    font-size: 1.5rem;
+}
+
+.form-control {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+}
+
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: #60a5fa;
+    color: #fff;
+    box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    border: none;
+}
+
+.app-footer {
+    margin-top: auto;
+}
+
+/* Phase 2 — Banking UI */
+.stat-card { position: relative; overflow: hidden; }
+.stat-icon {
+    width: 42px; height: 42px; border-radius: 12px;
+    display: grid; place-items: center; margin-bottom: 12px;
+    background: rgba(255,255,255,0.08); color: #93c5fd;
+}
+.action-btn {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 8px; padding: 1.25rem; border-radius: 14px; text-decoration: none;
+    background: rgba(255,255,255,0.06); color: #fff; border: 1px solid rgba(255,255,255,0.1);
+    transition: 0.2s ease;
+}
+.action-btn:hover { background: rgba(59,130,246,0.2); color: #fff; transform: translateY(-2px); }
+.banking-form-card { max-width: 560px; }
+.risk-badge { font-size: 0.85rem; padding: 0.5rem 0.9rem; border-radius: 999px; }
+.risk-safe { background: rgba(34,197,94,0.2); color: #86efac; }
+.risk-low-risk { background: rgba(59,130,246,0.2); color: #93c5fd; }
+.risk-medium-risk { background: rgba(245,158,11,0.2); color: #fcd34d; }
+.risk-high-risk { background: rgba(239,68,68,0.2); color: #fca5a5; }
+.type-badge { font-size: 0.75rem; }
+.type-deposit { background: rgba(34,197,94,0.2); color: #86efac; }
+.type-withdraw { background: rgba(245,158,11,0.2); color: #fcd34d; }
+.type-transfer { background: rgba(59,130,246,0.2); color: #93c5fd; }
+.receipt-card { max-width: 720px; }
+.receipt-logo {
+    width: 64px; height: 64px; margin: 0 auto 12px; border-radius: 50%;
+    display: grid; place-items: center; background: rgba(59,130,246,0.2); color: #93c5fd; font-size: 1.5rem;
+}
+.receipt-divider { height: 1px; background: rgba(255,255,255,0.15); margin: 1rem 0; }
+.receipt-card .label { color: rgba(255,255,255,0.55); font-size: 0.85rem; margin-bottom: 0.2rem; }
+.receipt-card .value { color: #fff; font-weight: 600; }
+.form-select {
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff;
+}
+.form-select option { color: #000; }
+.page-link { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); color: #fff; }
+.page-item.active .page-link { background: #3b82f6; border-color: #3b82f6; }
+
+.security-banner {
+    border-radius: 12px;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    background: rgba(245, 158, 11, 0.12);
+    color: #fde68a;
+    margin-bottom: 1rem;
+}
+
+@media print {
+    body * { visibility: hidden; }
+    #receiptPrintArea, #receiptPrintArea * { visibility: visible; }
+    #receiptPrintArea { position: absolute; left: 0; top: 0; width: 100%; color: #000 !important; background: #fff !important; }
+    .no-print { display: none !important; }
+}

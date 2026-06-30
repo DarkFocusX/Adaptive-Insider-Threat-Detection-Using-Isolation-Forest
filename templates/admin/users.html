@@ -1,0 +1,57 @@
+{% extends 'layout/base.html' %}
+{% block title %}Users | Admin | SecureBank{% endblock %}
+
+{% block content %}
+<div class="admin-page py-4">
+    <h2 class="text-white mb-4"><i class="fa-solid fa-users me-2"></i>Users</h2>
+
+    <div class="glass-card p-4 mb-4">
+        <h5 class="text-white mb-3">Online Now ({{ online_users|length }})</h5>
+        {% if online_users %}
+        <div class="table-responsive">
+            <table class="table table-dark table-sm">
+                <thead><tr><th>Name</th><th>Account</th><th>Trust</th><th>Last Activity</th></tr></thead>
+                <tbody>
+                    {% for u in online_users %}
+                    <tr>
+                        <td>{{ u.full_name }}</td>
+                        <td>{{ u.account_number }}</td>
+                        <td>{{ u.trust_score }}%</td>
+                        <td>{{ u.last_activity }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-white-50 mb-0">No users online.</p>
+        {% endif %}
+    </div>
+
+    <div class="glass-card p-4">
+        <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Name</th><th>Email</th><th>Account</th><th>Balance</th>
+                        <th>Trust</th><th>Risk</th><th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for u in users %}
+                    <tr>
+                        <td>{{ u.full_name }}</td>
+                        <td>{{ u.email }}</td>
+                        <td>{{ u.account_number }}</td>
+                        <td>₹{{ "%.2f"|format(u.balance) }}</td>
+                        <td>{{ u.trust_score }}%</td>
+                        <td><span class="badge risk-badge risk-{{ u.risk_level|lower|replace(' ', '-') }}">{{ u.risk_level }}</span></td>
+                        <td>{{ 'Active' if u.is_active else 'Inactive' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

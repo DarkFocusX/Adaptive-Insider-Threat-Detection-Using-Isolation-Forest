@@ -1,0 +1,32 @@
+{% extends 'layout/base.html' %}
+{% block title %}Profile | SecureBank{% endblock %}
+{% block content %}
+<div class="py-4" data-aos="fade-up">
+    <div class="row g-4">
+        <div class="col-lg-5">
+            <div class="glass-card p-4">
+                <h4 class="text-white mb-4"><i class="fa-solid fa-user me-2"></i>Profile Details</h4>
+                <p class="text-white-50 mb-1">Full Name</p><h6 class="text-white">{{ user.full_name }}</h6>
+                <p class="text-white-50 mb-1 mt-3">Email</p><h6 class="text-white">{{ user.email }}</h6>
+                <p class="text-white-50 mb-1 mt-3">Phone</p><h6 class="text-white">{{ user.phone }}</h6>
+                <p class="text-white-50 mb-1 mt-3">Account Number</p><h6 class="text-white">{{ security.display_account }}</h6>
+                <p class="text-white-50 mb-1 mt-3">Balance</p>
+                <h6 class="text-white">
+                    {% if security.display_balance is none %}₹******{% else %}₹{{ "%.2f"|format(security.display_balance) }}{% endif %}
+                </h6>
+            </div>
+        </div>
+        <div class="col-lg-7">
+            <div class="glass-card p-4">
+                <h4 class="text-white mb-4">Edit Profile</h4>
+                <form method="POST">
+                    <div class="mb-3"><label class="form-label text-white-50">Full Name</label><input type="text" name="full_name" class="form-control" value="{{ user.full_name }}" required></div>
+                    <div class="mb-3"><label class="form-label text-white-50">Phone</label><input type="tel" name="phone" class="form-control" value="{{ user.phone }}" required></div>
+                    <div class="mb-3"><label class="form-label text-white-50">Email (read-only)</label><input type="email" class="form-control" value="{{ user.email }}" disabled></div>
+                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-save me-2"></i>Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

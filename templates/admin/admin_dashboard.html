@@ -1,0 +1,186 @@
+{% extends 'layout/base.html' %}
+{% block title %}Admin Dashboard | SecureBank{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="admin-page py-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="text-white mb-1"><i class="fa-solid fa-chart-line me-2"></i>Admin Dashboard</h2>
+            <p class="text-white-50 mb-0">Security monitoring & adaptive response overview</p>
+        </div>
+        <a href="{{ url_for('admin.admin_logout') }}" class="btn btn-outline-danger btn-sm">
+            <i class="fa-solid fa-right-from-bracket me-1"></i>Logout
+        </a>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-xl-3">
+            <div class="glass-card admin-kpi p-3">
+                <p class="text-white-50 mb-1">Total Users</p>
+                <h3 class="text-white mb-0">{{ stats.total_users }}</h3>
+            </div>
+        </div>
+        <div class="col-6 col-xl-3">
+            <div class="glass-card admin-kpi p-3">
+                <p class="text-white-50 mb-1">Online Users</p>
+                <h3 class="text-success mb-0">{{ stats.online_users }}</h3>
+            </div>
+        </div>
+        <div class="col-6 col-xl-3">
+            <div class="glass-card admin-kpi p-3">
+                <p class="text-white-50 mb-1">Avg Trust Score</p>
+                <h3 class="text-info mb-0">{{ stats.avg_trust_score }}%</h3>
+            </div>
+        </div>
+        <div class="col-6 col-xl-3">
+            <div class="glass-card admin-kpi p-3">
+                <p class="text-white-50 mb-1">High Risk Users</p>
+                <h3 class="text-danger mb-0">{{ stats.high_risk_users }}</h3>
+            </div>
+        </div>
+        <div class="col-6 col-xl-3">
+            <div class="glass-card admin-kpi p-3">
+                <p class="text-white-50 mb-1">Open Alerts</p>
+                <h3 class="text-warning mb-0">{{ stats.total_alerts }}</h3>
+            </div>
+        </div>
+        <div class="col-6 col-xl-3">
+            <div class="glass-card admin-kpi p-3">
+                <p class="text-white-50 mb-1">Predictions Logged</p>
+                <h3 class="text-white mb-0">{{ stats.total_predictions }}</h3>
+            </div>
+        </div>
+        <div class="col-6 col-xl-3">
+            <div class="glass-card admin-kpi p-3">
+                <p class="text-white-50 mb-1">Anomalies Detected</p>
+                <h3 class="text-danger mb-0">{{ stats.anomaly_count }}</h3>
+            </div>
+        </div>
+        <div class="col-6 col-xl-3">
+            <div class="glass-card admin-kpi p-3">
+                <p class="text-white-50 mb-1">Risk Score (inverse)</p>
+                <h3 class="text-white mb-0">{{ (100 - stats.avg_trust_score)|round(1) }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="glass-card p-3 mb-4">
+        <div class="d-flex flex-wrap justify-content-between gap-2 align-items-center">
+            <div>
+                <p class="text-white-50 mb-1">ML Model Integration</p>
+                <h6 class="text-white mb-0">{{ model_status.path }}</h6>
+            </div>
+            {% if model_status.loaded %}
+                <span class="badge bg-success">Isolation Forest Loaded</span>
+            {% elif model_status.exists %}
+                <span class="badge bg-warning text-dark">Model Found, Load Pending</span>
+            {% else %}
+                <span class="badge bg-danger">trained_model.pkl Missing</span>
+            {% endif %}
+        </div>
+        {% if model_status.error %}
+            <p class="small text-warning mb-0 mt-2">{{ model_status.error }}</p>
+        {% endif %}
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-lg-6">
+            <div class="glass-card p-4 chart-card">
+                <h5 class="text-white mb-3">User Activity (7 Days)</h5>
+                <canvas id="activityChart" height="180"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="glass-card p-4 chart-card">
+                <h5 class="text-white mb-3">Trust Score Distribution</h5>
+                <canvas id="trustChart" height="180"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="glass-card p-4 chart-card">
+                <h5 class="text-white mb-3">Risk Distribution</h5>
+                <canvas id="riskChart" height="180"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="glass-card p-4 chart-card">
+                <h5 class="text-white mb-3">Prediction Results</h5>
+                <canvas id="predictionChart" height="180"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="glass-card p-4">
+                <div class="d-flex justify-content-between mb-3">
+                    <h5 class="text-white mb-0">Recent Alerts</h5>
+                    <a href="{{ url_for('admin.alerts') }}" class="text-info small">View All</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-dark table-sm align-middle mb-0">
+                        <thead><tr><th>User</th><th>Severity</th><th>Message</th></tr></thead>
+                        <tbody>
+                            {% for alert in recent_alerts %}
+                            <tr>
+                                <td>{{ alert.full_name }}</td>
+                                <td><span class="badge bg-{{ 'danger' if alert.severity == 'High' else 'warning' }}">{{ alert.severity }}</span></td>
+                                <td class="small">{{ alert.message[:80] }}...</td>
+                            </tr>
+                            {% else %}
+                            <tr><td colspan="3" class="text-white-50">No alerts yet.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="glass-card p-4">
+                <div class="d-flex justify-content-between mb-3">
+                    <h5 class="text-white mb-0">Latest Activity Logs</h5>
+                    <a href="{{ url_for('admin.logs') }}" class="text-info small">View All</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-dark table-sm align-middle mb-0">
+                        <thead><tr><th>User</th><th>Action</th><th>Prediction</th><th>Trust</th><th>Model</th></tr></thead>
+                        <tbody>
+                            {% for log in recent_logs %}
+                            <tr>
+                                <td>{{ log.full_name }}</td>
+                                <td>{{ log.action_type }}</td>
+                                <td>
+                                    <span class="badge bg-{{ 'danger' if log.prediction == 'Anomaly' else 'success' }}">
+                                        {{ log.prediction }}
+                                    </span>
+                                </td>
+                                <td>{{ log.trust_score }}%</td>
+                                <td class="small">{{ log.model_used or 'unknown' }}</td>
+                            </tr>
+                            {% else %}
+                            <tr><td colspan="5" class="text-white-50">No logs yet.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mt-4">
+        <a href="{{ url_for('admin.users') }}" class="btn btn-outline-light btn-sm">Users</a>
+        <a href="{{ url_for('admin.alerts') }}" class="btn btn-outline-light btn-sm">Alerts</a>
+        <a href="{{ url_for('admin.logs') }}" class="btn btn-outline-light btn-sm">Logs</a>
+        <a href="{{ url_for('admin.trust_scores') }}" class="btn btn-outline-light btn-sm">Trust Scores</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='js/admin_charts.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,14 @@
+venv/
+__pycache__/
+*.pyc
+.env
+database.db
+logs/*
+!logs/.gitkeep
+uploads/*
+!uploads/.gitkeep
+.DS_Store
+.idea/
+.vscode/
+*.log
+.pytest_cache/

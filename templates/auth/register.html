@@ -1,0 +1,46 @@
+{% extends 'layout/base.html' %}
+{% block title %}Register | SecureBank{% endblock %}
+
+{% block content %}
+<section class="auth-section d-flex align-items-center justify-content-center min-vh-100 py-5">
+    <div class="auth-card glass-card p-4 p-md-5" data-aos="fade-up">
+        <div class="text-center mb-4">
+            <div class="auth-icon mb-3"><i class="fa-solid fa-user-plus"></i></div>
+            <h2 class="text-white fw-bold">Create Account</h2>
+            <p class="text-white-50">Open your secure banking account</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('auth.register') }}" id="registerForm">
+            <div class="mb-3">
+                <label class="form-label text-white-50">Full Name</label>
+                <input type="text" name="full_name" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label text-white-50">Email</label>
+                <input type="email" name="email" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label text-white-50">Phone</label>
+                <input type="tel" name="phone" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label text-white-50">Password</label>
+                <input type="password" name="password" class="form-control" minlength="6" required>
+            </div>
+            <div class="mb-4">
+                <label class="form-label text-white-50">Confirm Password</label>
+                <input type="password" name="confirm_password" class="form-control" minlength="6" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg w-100">
+                <span class="btn-text"><i class="fa-solid fa-check me-2"></i>Register</span>
+                <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+            </button>
+        </form>
+
+        <p class="text-center text-white-50 mt-4 mb-0">
+            Already have an account?
+            <a href="{{ url_for('auth.login') }}" class="text-info">Login</a>
+        </p>
+    </div>
+</section>
+{% endblock %}

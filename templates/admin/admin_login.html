@@ -1,0 +1,19 @@
+{% extends 'layout/base.html' %}
+{% block title %}Admin Login | SecureBank{% endblock %}
+{% block content %}
+<section class="auth-section d-flex align-items-center justify-content-center min-vh-100">
+    <div class="auth-card glass-card p-4 p-md-5" data-aos="fade-up">
+        <div class="text-center mb-4">
+            <div class="auth-icon mb-3"><i class="fa-solid fa-user-shield"></i></div>
+            <h2 class="text-white fw-bold">Admin Portal</h2>
+            <p class="text-white-50">Adaptive Insider Threat Detection Console</p>
+        </div>
+        <form method="POST">
+            <div class="mb-3"><label class="form-label text-white-50">Admin Email</label><input type="email" name="email" class="form-control" required></div>
+            <div class="mb-4"><label class="form-label text-white-50">Password</label><input type="password" name="password" class="form-control" required></div>
+            <button type="submit" class="btn btn-danger btn-lg w-100"><i class="fa-solid fa-lock me-2"></i>Admin Login</button>
+        </form>
+        <p class="text-center text-white-50 mt-4 mb-0"><a href="{{ url_for('auth.login') }}" class="text-info">User Login</a></p>
+    </div>
+</section>
+{% endblock %}

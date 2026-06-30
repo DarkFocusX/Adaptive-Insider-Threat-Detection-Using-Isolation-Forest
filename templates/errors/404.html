@@ -1,0 +1,11 @@
+{% extends 'layout/base.html' %}
+{% block title %}404 | SecureBank{% endblock %}
+{% block content %}
+<div class="text-center py-5" data-aos="fade-up">
+    <div class="glass-card p-5 mx-auto" style="max-width:520px;">
+        <h1 class="display-4 text-white">404</h1>
+        <p class="text-white-50">Page not found.</p>
+        <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Go Home</a>
+    </div>
+</div>
+{% endblock %}
